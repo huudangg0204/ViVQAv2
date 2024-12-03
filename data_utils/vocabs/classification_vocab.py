@@ -21,7 +21,7 @@ class ClassificationVocab(Vocab):
         itoa = set()
         self.max_question_length = 0
         for json_dir in json_dirs:
-            json_data = json.load(open(json_dir))
+            json_data = json.load(open(json_dir,encoding="utf8"))
             for ann in json_data["annotations"]:
                 question = preprocess_sentence(ann["question"], self.tokenizer)
                 for answer in ann["answers"]:
