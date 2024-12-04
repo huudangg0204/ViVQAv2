@@ -103,8 +103,7 @@ class Vivqav2DictinaryDataset(BaseDataset):
 
         return Instance(
             question_id=item["question_id"],
-            image_id=image_id,
-            features=features,
+            image_id=image_id, 
             question=question,
             answers=answers,
             **features
