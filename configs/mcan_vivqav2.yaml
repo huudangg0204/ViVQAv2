@@ -2,15 +2,15 @@ TASK: ClassificationTask
 
 DATASET:
   FEATURE_DATASET:
-    TYPE: FeatureClassificationDataset
+    TYPE: Vivqav2FeatureDataset
     BATCH_SIZE: 64
-    WORKERS: 2
+    WORKERS: 0
     FEATURE_PATH:
-      FEATURES: features/ViVQA/vinvl_vinvl
+      FEATURES: features\vinvl_vinvl
       SCENE_TEXT: null
       IMAGE: data/vivqa_v2/images
   VOCAB:
-    TYPE: ClassificationVocab
+    TYPE: VQAv2ClassificationVocab
     TOKENIZER: null
     MIN_FREQ: 1
     WORD_EMBEDDING: null
@@ -25,50 +25,46 @@ DATASET:
     QUESTION_TOKEN: <question>
     ANSWER_TOKEN: <answer>
     JSON_PATH:
-      TRAIN: features/ViVQA/vivqa_train.json
-      DEV: features/ViVQA/vivqa_dev.json
-      TEST: features/ViVQA/vivqa_test.json
+      TRAIN: data/vivqa_v2/vivqa_v2_train.json
+      DEV: data/vivqa_v2/vivqa_v2_dev.json
+      TEST: data/vivqa_v2/vivqa_v2_test.json
   JSON_PATH:
-    TRAIN: features/ViVQA/vivqa_train.json
-    DEV: features/ViVQA/vivqa_dev.json
-    TEST: features/ViVQA/vivqa_test.json
+    TRAIN: data/vivqa_v2/vivqa_v2_train.json
+    DEV: data/vivqa_v2/vivqa_v2_dev.json
+    TEST: data/vivqa_v2/vivqa_v2_test.json
 
 TRAINING:
   CHECKPOINT_PATH: saved_models
   LEARNING_RATE: 1.
   WARMUP: 10000
-  SCORE: Accuracy
-  VERBOSE_SCORES:
-    - Accuracy
+  SCORE: CIDEr
+  GET_SCORES: True
   TRAINING_BEAM_SIZE: 5
   EVALUATING_BEAM_SIZE: 3
   PATIENCE: 5
-
+  
 MODEL:
-  ARCHITECTURE: CrossModalityTransformer
-  NAME: cross_modality_transformer
+  ARCHITECTURE: MCAN
+  NAME: mcan_region_x152++_faster_rcnn
   DEVICE: cuda
-  REGION_EMBEDDING:
+  D_MODEL: 512
+  VISION_EMBEDDING:
     ARCHITECTURE: FeatureEmbedding
-    DEVICE: cuda
     D_FEATURE: 2048
     D_MODEL: 512
-    DROPOUT: .1
+    DROPOUT: 0.1
   TEXT_EMBEDDING:
-    ARCHITECTURE: UsualEmbedding
-    DEVICE: cuda
-    D_EMBEDDING: 300
+    ARCHITECTURE: LSTMTextEmbedding
     D_MODEL: 512
-    DROPOUT: .1
+    D_EMBEDDING: 300
+    DROPOUT: 0.1
     WORD_EMBEDDING: null
     WORD_EMBEDDING_CACHE: null
-  D_MODEL: 512
-  DROPOUT: .1
-  ENCODER:
-    ARCHITECTURE: CrossModalityEncoder
+  SELF_ENCODER:
+    ARCHITECTURE: Encoder
     D_MODEL: 512
     LAYERS: 3
-    VISION_LANGUAGE_ATTENTION:
+    SELF_ATTENTION:
       ARCHITECTURE: ScaledDotProductAttention
       HEAD: 8
       D_MODEL: 512
@@ -79,7 +75,11 @@ MODEL:
       USE_AOA: False
       CAN_BE_STATEFUL: False
       DROPOUT: .1
-    LANGUAGE_VISION_ATTENTION:
+  GUIDED_ENCODER:
+    ARCHITECTURE: GuidedAttentionEncoder
+    D_MODEL: 512
+    LAYERS: 3
+    SELF_ATTENTION:
       ARCHITECTURE: ScaledDotProductAttention
       HEAD: 8
       D_MODEL: 512
@@ -90,18 +90,7 @@ MODEL:
       USE_AOA: False
       CAN_BE_STATEFUL: False
       DROPOUT: .1
-    VISION_SELF_ATTENTION:
-      ARCHITECTURE: ScaledDotProductAttention
-      HEAD: 8
-      D_MODEL: 512
-      D_KEY: 64
-      D_VALUE: 64
-      D_FF: 2048
-      D_FEATURE: 2048
-      USE_AOA: False
-      CAN_BE_STATEFUL: False
-      DROPOUT: .1
-    LANGUAGE_SELF_ATTENTION:
+    GUIDED_ATTENTION:
       ARCHITECTURE: ScaledDotProductAttention
       HEAD: 8
       D_MODEL: 512

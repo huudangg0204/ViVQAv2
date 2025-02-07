@@ -6,9 +6,9 @@ DATASET:
     BATCH_SIZE: 64
     WORKERS: 2
     FEATURE_PATH:
-      FEATURES: features/ViVQA/vinvl_vinvl
+      FEATURES: features/vinvl_vinvl
       SCENE_TEXT: null
-      IMAGE: data/vivqa_v2/images
+      IMAGE: null
   VOCAB:
     TYPE: ClassificationVocab
     TOKENIZER: null
@@ -25,13 +25,13 @@ DATASET:
     QUESTION_TOKEN: <question>
     ANSWER_TOKEN: <answer>
     JSON_PATH:
-      TRAIN: features/ViVQA/vivqa_train.json
-      DEV: features/ViVQA/vivqa_dev.json
-      TEST: features/ViVQA/vivqa_test.json
+      TRAIN: data/vivqa_v2/vivqa_v2_train.json
+      DEV: data/vivqa_v2/vivqa_v2_dev.json
+      TEST: data/vivqa_v2/vivqa_v2_test.json
   JSON_PATH:
-    TRAIN: features/ViVQA/vivqa_train.json
-    DEV: features/ViVQA/vivqa_dev.json
-    TEST: features/ViVQA/vivqa_test.json
+    TRAIN: data/vivqa_v2/vivqa_v2_train.json
+    DEV: data/vivqa_v2/vivqa_v2_dev.json
+    TEST: data/vivqa_v2/vivqa_v2_test.json
 
 TRAINING:
   CHECKPOINT_PATH: saved_models
