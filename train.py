@@ -14,7 +14,11 @@ args = parser.parse_args()
 config = get_config(args.config_file)
 
 task = build_task(config)
-print(task)
+
 task.start()
 task.get_predictions()
 logger.info("Task done.")
+
+# #shutdown pc
+# import os
+# os.system("shutdown /s /t 1")

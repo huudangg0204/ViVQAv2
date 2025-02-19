@@ -242,4 +242,4 @@ class ClassificationTask(BaseTask):
         json.dump({
             "results": results,
             **scores,
-        }, open(os.path.join(self.checkpoint_path, "test_results.json"), "w+"), ensure_ascii=False)
+        }, open(os.path.join(self.checkpoint_path, "test_results.json"), "w+", encoding='utf8'), ensure_ascii=False)

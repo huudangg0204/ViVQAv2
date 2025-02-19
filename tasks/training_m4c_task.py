@@ -1,5 +1,4 @@
 import torch
-
 from utils.logging_utils import setup_logger
 from utils.instance import Instance
 from tasks.open_ended_task import OpenEndedTask

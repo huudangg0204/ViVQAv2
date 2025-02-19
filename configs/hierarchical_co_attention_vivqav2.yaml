@@ -1,5 +1,4 @@
 TASK: ClassificationTask
-
 DATASET:
   FEATURE_DATASET:
     TYPE: Vivqav2FeatureDataset
@@ -50,10 +49,10 @@ TRAINING:
     - F1
     - Precision
     - Recall
-  
+
 MODEL:
-  ARCHITECTURE: MCAN
-  NAME: mcan_region_x152++_faster_rcnn
+  ARCHITECTURE: HierarchicalCoAttention
+  NAME: hierarchical_co_attention
   DEVICE: cuda
   D_MODEL: 512
   VISION_EMBEDDING:
@@ -62,17 +61,25 @@ MODEL:
     D_MODEL: 512
     DROPOUT: 0.1
   TEXT_EMBEDDING:
-    ARCHITECTURE: LSTMTextEmbedding
-    D_MODEL: 512
+    ARCHITECTURE: UsualEmbedding
+    D_MODEL: 300
     D_EMBEDDING: 300
     DROPOUT: 0.1
-    WORD_EMBEDDING: null
+    WORD_EMBEDDING: Null
     WORD_EMBEDDING_CACHE: null
-  SELF_ENCODER:
-    ARCHITECTURE: Encoder
+  HIERARCHICAL:
     D_MODEL: 512
-    LAYERS: 3
-    SELF_ATTENTION:
+    WORD_EMBEDDING_DIM: 300
+    N_GRAMS:
+     - 1
+     - 2
+     - 3
+     - 4
+  ENCODER:
+    ARCHITECTURE: CoAttentionEncoder
+    D_MODEL: 512
+    LAYERS: 8
+    VISION_LANGUAGE_ATTENTION:
       ARCHITECTURE: ScaledDotProductAttention
       HEAD: 8
       D_MODEL: 512
@@ -83,11 +90,7 @@ MODEL:
       USE_AOA: False
       CAN_BE_STATEFUL: False
       DROPOUT: .1
-  GUIDED_ENCODER:
-    ARCHITECTURE: GuidedAttentionEncoder
-    D_MODEL: 512
-    LAYERS: 3
-    SELF_ATTENTION:
+    LANGUAGE_VISION_ATTENTION:
       ARCHITECTURE: ScaledDotProductAttention
       HEAD: 8
       D_MODEL: 512
@@ -98,7 +101,18 @@ MODEL:
       USE_AOA: False
       CAN_BE_STATEFUL: False
       DROPOUT: .1
-    GUIDED_ATTENTION:
+    VISION_SELF_ATTENTION:
+      ARCHITECTURE: ScaledDotProductAttention
+      HEAD: 8
+      D_MODEL: 512
+      D_KEY: 64
+      D_VALUE: 64
+      D_FF: 2048
+      D_FEATURE: 2048
+      USE_AOA: False
+      CAN_BE_STATEFUL: False
+      DROPOUT: .1
+    LANGUAGE_SELF_ATTENTION:
       ARCHITECTURE: ScaledDotProductAttention
       HEAD: 8
       D_MODEL: 512
@@ -115,4 +129,3 @@ MODEL:
   TEXT_ATTR_REDUCE:
     D_MODEL: 512
     DROPOUT: 0.1
-

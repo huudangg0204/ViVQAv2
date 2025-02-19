@@ -2,15 +2,15 @@ TASK: ClassificationTask
 
 DATASET:
   FEATURE_DATASET:
-    TYPE: FeatureClassificationDataset
+    TYPE: Vivqav2FeatureDataset
     BATCH_SIZE: 64
-    WORKERS: 2
+    WORKERS: 0
     FEATURE_PATH:
-      FEATURES: features/vinvl_vinvl
+      FEATURES: features\vinvl_vinvl
       SCENE_TEXT: null
-      IMAGE: null
+      IMAGE: data/vivqa_v2/images
   VOCAB:
-    TYPE: ClassificationVocab
+    TYPE: VQAv2ClassificationVocab
     TOKENIZER: null
     MIN_FREQ: 1
     WORD_EMBEDDING: null
@@ -33,17 +33,24 @@ DATASET:
     DEV: data/vivqa_v2/vivqa_v2_dev.json
     TEST: data/vivqa_v2/vivqa_v2_test.json
 
+
 TRAINING:
   CHECKPOINT_PATH: saved_models
-  LEARNING_RATE: 1.
+  LEARNING_RATE: 0.002
   WARMUP: 10000
-  SCORE: Accuracy
-  VERBOSE_SCORES:
-    - Accuracy
+  SCORE: CIDEr
+  GET_SCORES: True
   TRAINING_BEAM_SIZE: 5
   EVALUATING_BEAM_SIZE: 3
   PATIENCE: 5
-
+  VERBOSE_SCORES:
+    - CIDEr
+    - BLEU
+    - ROUGE
+    - Accuracy
+    - F1
+    - Precision
+    - Recall
 MODEL:
   ARCHITECTURE: CrossModalityTransformer
   NAME: cross_modality_transformer

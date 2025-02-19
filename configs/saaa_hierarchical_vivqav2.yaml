@@ -3,14 +3,14 @@ TASK: ClassificationTask
 DATASET:
   FEATURE_DATASET:
     TYPE: Vivqav2FeatureDataset
-    BATCH_SIZE: 60
-    WORKERS: 2
+    BATCH_SIZE: 64
+    WORKERS: 0
     FEATURE_PATH:
       FEATURES: features\vinvl_vinvl
       SCENE_TEXT: null
       IMAGE: data/vivqa_v2/images
   VOCAB:
-    TYPE: ClassificationVocab
+    TYPE: VQAv2ClassificationVocab
     TOKENIZER: null
     MIN_FREQ: 1
     WORD_EMBEDDING: null
@@ -40,10 +40,35 @@ TRAINING:
   SCORE: CIDEr
   GET_SCORES: True
   PATIENCE: 5
+  VERBOSE_SCORES:
+    - CIDEr
+    - BLEU
+    - ROUGE
+    - Accuracy
+    - F1
+    - Precision
+    - Recall
+
+
+TRAINING:
+  CHECKPOINT_PATH: saved_models
+  LEARNING_RATE: 0.01
+  WARMUP: 10000
+  SCORE: CIDEr
+  GET_SCORES: True
+  PATIENCE: 5
+  VERBOSE_SCORES:
+    - CIDEr
+    - BLEU
+    - ROUGE
+    - Accuracy
+    - F1
+    - Precision
+    - Recall
 
 MODEL:
   ARCHITECTURE: SAAA
-  NAME: saaa_region_x152++_faster_rcnn
+  NAME: saaa_hierarchiacal_region_x152++_faster_rcnn
   DEVICE: cuda
   D_MODEL: 512
   VISION_PROCESSOR:

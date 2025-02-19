@@ -21,7 +21,9 @@ class CoAttention(nn.Module):
     def forward(self, v, q):
         v = self.v_conv(self.drop(v))
         q = self.q_lin(self.drop(q))
-        q = q.unsqueeze(1).expand_as(v)
+        q = q.permute(0, 2, 1)  # Đổi trật tự thành [64, 512, 32] để nội suy theo chiều 32
+        q = F.interpolate(q, size=int(v.shape[1]), mode='linear', align_corners=False)  # Mở rộng lên 74
+        q = q.permute(0, 2, 1)  # Đưa về lại [64, 74, 512]
         x = self.relu(v + q)
         x = self.x_conv(self.drop(x))
         return x
@@ -119,7 +121,9 @@ class SAAA(BaseClassificationModel):
         v = v / (v.norm(p=2, dim=1, keepdim=True).expand_as(v) + 1e-8)
         a = self.attention(v, q)
         v = self.apply_attention(v, a)
-
+        # convert v[64, 512] and q[64, 32, 512] to [64, 1024]
+        v = v.view(v.size(0), -1)
+        q = q.mean(dim=1)
         combined = torch.cat([v, q], dim=1)
         out = self.classifier(combined)
 
