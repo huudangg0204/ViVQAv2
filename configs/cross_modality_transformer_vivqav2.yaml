@@ -51,6 +51,7 @@ TRAINING:
     - F1
     - Precision
     - Recall
+    
 MODEL:
   ARCHITECTURE: CrossModalityTransformer
   NAME: cross_modality_transformer
