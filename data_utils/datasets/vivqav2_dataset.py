@@ -123,7 +123,7 @@ class Vivqav2FeatureDataset(BaseDataset):
             filename=file_name,
             question=item["question"],
             question_tokens=question,
-            answer=item["answer"],
+            answer=answer,
             answer_tokens=answer,
             shifted_right_answer_tokens=shifted_right_answer,
             **features
