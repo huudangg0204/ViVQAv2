@@ -4,10 +4,12 @@ saved_models
 images
 *_test
 __pycache__
-
+hf_models
+hf_vevn
 *.json
 examine*
 
 statistic.ipynb
 
 *.zip
+*.csv

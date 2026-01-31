@@ -25,3 +25,5 @@ from .vilbert import ViLBERT
 from .mcan_image_captioning import MCANCaptioning
 from .visualbert import VisualBERT
 from .interative_hierarchical_co_attention import IterativeHierarchicalCoAttention
+from .phrasal_mcan.mcan_phrasal import PhrasalMCAN
+from .constituent_mcan.mcan_constituent import ConstituentMCAN

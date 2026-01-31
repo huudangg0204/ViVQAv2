@@ -15,6 +15,7 @@ class VQAv2ClassificationVocab(Vocab):
 
     def __init__(self, config):
         self.max_answer_length = 0
+        self.max_question_length = 0  # Must be initialized before super().__init__
         super(VQAv2ClassificationVocab, self).__init__(config)
 
     def make_vocab(self, json_dirs):
